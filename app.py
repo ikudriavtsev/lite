@@ -15,22 +15,22 @@ app.config.update(dict(
 
 @app.route('/')
 def index():
-    capacity, time_left = get_battery_status()
+    capacity, power_cord = get_battery_status()
     return render_template(
         'index.html',
         capacity=capacity,
-        time_left=time_left
+        power_cord=power_cord
     )
 
 
 @app.route('/battery/')
 def battery():
     if request.is_xhr:
-        capacity, time_left = get_battery_status()
+        capacity, power_cord = get_battery_status()
         return render_template(
             'battery.html',
             capacity=capacity,
-            time_left=time_left
+            power_cord=power_cord
         )
     return abort(404)
 
