@@ -8,4 +8,13 @@
 			{{ capacity }}%, {{ power_cord }}
 		</div>
 	</div>
+	{% if battery_time and power_cord in ('charging', 'discharging') %}
+		{% if power_cord == 'discharging' %}
+			<h2 class="hidden-xs"><small>Remaining time:&nbsp;</small>{{ battery_time }}</h2>
+			<h3 class="visible-xs"><small>Remaining time:&nbsp;</small>{{ battery_time }}</h3>
+		{% else %}
+			<h2 class="hidden-xs"><small>Time to full charge:&nbsp;</small>{{ battery_time }}</h2>
+			<h3 class="visible-xs"><small>Time to full charge:&nbsp;</small>{{ battery_time }}</h3>
+		{% endif %}
+	{% endif %}
 {% endif %}
