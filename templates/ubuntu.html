@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block container %}
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 class="hidden-xs">Your battery:</h2>
+			<h3 class="visible-xs">Your battery:</h3>
+		</div>
+	</div>
+	<div class="row">&nbsp;</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6" id="battery">
+			{% include "battery.html" %}
+		</div>
+	</div>
+{% endblock container %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			setInterval(function(){
+				$.get({{ url_for("battery") }})
+				.always(function(data){
+					$('#battery').html(data);
+				})
+			}, {{ config['BATTERY_STATUS_UPDATE_PERIOD'] }});
+		});
+	</script>
+{% endblock javascript %}

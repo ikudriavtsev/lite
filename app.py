@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort
-from utils import get_battery_status, is_batery_present
+from utils import get_battery_status, is_batery_present, is_ubuntu
 
 
 app = Flask(__name__)
@@ -15,13 +15,15 @@ app.config.update(dict(
 
 @app.route('/')
 def index():
+    if not is_ubuntu():
+        return render_template('non-ubuntu.html')
     present = is_batery_present()
     if not present:
         capacity, power_cord, battery_time = None, None, None
     else:
         capacity, power_cord, battery_time = get_battery_status()
     return render_template(
-        'index.html',
+        'ubuntu.html',
         capacity=capacity,
         power_cord=power_cord,
         present=present,
