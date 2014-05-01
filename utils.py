@@ -9,7 +9,7 @@ battery_info_dir = '/sys/class/power_supply/BAT0'
 
 def get_battery_status():
     """Reads the current battery status.
-    Returns the capacity and if using a power cord.
+    Returns the capacity and the status of power cord.
     Returns tuple of None if the info is not available.
 
     :return: tuple of capacity and power cord or tuple of None
@@ -24,7 +24,9 @@ def get_battery_status():
     with open(capacity_file_path, 'r') as f:
         capacity = f.read().strip()
     with open(status_file_path, 'r') as f:
-        power_cord = f.read().strip() != 'Discharging'
+        power_cord = f.read().strip().lower()
+        if power_cord not in ('charging', 'discharging'):
+            power_cord = 'using a power cord'
     return capacity, power_cord
 
 

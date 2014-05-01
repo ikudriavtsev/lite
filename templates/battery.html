@@ -1,9 +1,9 @@
-{% if not capacity %}
+{% if not capacity or not power_cord %}
 	<div class="alert alert-warning">Information about your battery is not available.</div>
 {% else %}
 	<div class="progress">
 		<div class="progress-bar" role="progressbar" aria-valuenow="{{ capacity }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ capacity }}%;">
-			{{ capacity }}%, {% if not power_cord %}discharging{% else %}using a power cord{% endif %}
+			{{ capacity }}%, {{ power_cord }}
 		</div>
 	</div>
 {% endif %}
