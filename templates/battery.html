@@ -1,0 +1,5 @@
+<div class="progress">
+	<div class="progress-bar" role="progressbar" aria-valuenow="{{ capacity }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ capacity }}%;">
+		{{ capacity }}%, {% if time_left %}{{ time_left }} minutes left{% else %}using a power cord{% endif %}
+	</div>
+</div>

@@ -24,15 +24,31 @@
 		</div>
 	</div>
 
-
-	<div class="row wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2 class="hidden-xs">Your battery:</h2>
+				<h3 class="visible-xs">Your battery:</h3>
+			</div>
+		</div>
+		<div class="row">&nbsp;</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6" id="battery">
+				{% include "battery.html" %}
+			</div>
+		</div>
 	</div>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-
+			setInterval(function(){
+				$.get({{ url_for("battery") }})
+				.always(function(data){
+					$('#battery').html(data);
+				})
+			}, {{ config['BATTERY_STATUS_UPDATE_PERIOD'] }});
 		});
 	</script>
 </body>
