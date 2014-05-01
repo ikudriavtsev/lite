@@ -1,4 +1,6 @@
-{% if not capacity or not power_cord %}
+{% if not present %}
+	<div class="alert alert-info">Looks like your battery is not plugged in. Please, insert your battery and refresh the page.</div>
+{% elif not capacity or not power_cord %}
 	<div class="alert alert-warning">Information about your battery is not available.</div>
 {% else %}
 	<div class="progress">

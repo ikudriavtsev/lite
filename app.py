@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort
-from utils import get_battery_status
+from utils import get_battery_status, is_batery_present
 
 
 app = Flask(__name__)
@@ -15,22 +15,32 @@ app.config.update(dict(
 
 @app.route('/')
 def index():
-    capacity, power_cord = get_battery_status()
+    present = is_batery_present()
+    if not present:
+        capacity, power_cord = None, None
+    else:
+        capacity, power_cord = get_battery_status()
     return render_template(
         'index.html',
         capacity=capacity,
-        power_cord=power_cord
+        power_cord=power_cord,
+        present=present
     )
 
 
 @app.route('/battery/')
 def battery():
     if request.is_xhr:
-        capacity, power_cord = get_battery_status()
+        present = is_batery_present()
+        if not present:
+            capacity, power_cord = None, None
+        else:
+            capacity, power_cord = get_battery_status()
         return render_template(
             'battery.html',
             capacity=capacity,
-            power_cord=power_cord
+            power_cord=power_cord,
+            present=present
         )
     return abort(404)
 

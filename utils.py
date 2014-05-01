@@ -30,6 +30,21 @@ def get_battery_status():
     return capacity, power_cord
 
 
+def is_batery_present():
+    """Determines whether the battery is plugged in.
+
+    :return: True or False
+    :rtype: boolean
+    """
+    present_file_path = battery_info_dir + '/present'
+    if not os.path.isdir(battery_info_dir) or\
+       not os.path.exists(present_file_path):
+        return False
+    with open(present_file_path, 'r') as f:
+        present = f.read().strip()
+    return bool(int(present))
+
+
 def is_ubuntu():
     """Whether the current os is Ubuntu.
 
