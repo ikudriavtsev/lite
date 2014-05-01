@@ -53,18 +53,27 @@ def get_battery_time():
     :return: battery time to full or time to empty
     :rtype: float or NoneType
     """
-    upower = Popen(
-        ['upower', '-i', '/org/freedesktop/UPower/devices/battery_BAT0'],
-        stdout=PIPE
-    )
-    grep = Popen(['grep', '-E', 'time\ to'], stdin=upower.stdout, stdout=PIPE)
-    std, err = grep.communicate()
+    std, err = Popen(['upower', '-e'], stdout=PIPE).communicate()
     if not err:
-        regexp = '^time to \w+:\s+?(\d+,\d+) hours$'
-        match = re.match(regexp, std.strip())
-        groups = match.groups()
-        if groups:
-            return float(groups[0].replace(',', '.'))
+        for device in std.split():
+            if 'battery_' in device:
+                upower = Popen(
+                    ['upower', '-i', device],
+                    stdout=PIPE
+                )
+                grep = Popen(
+                    ['grep', '-E', 'time\ to'],
+                    stdin=upower.stdout,
+                    stdout=PIPE
+                )
+                std, err = grep.communicate()
+                if not err:
+                    regexp = '^time to \w+:\s+?(\d+,\d+) hours$'
+                    match = re.match(regexp, std.strip())
+                    groups = match.groups()
+                    if groups:
+                        # assuming only one battery device
+                        return float(groups[0].replace(',', '.'))
 
 
 def is_batery_present():
